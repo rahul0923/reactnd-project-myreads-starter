@@ -2,6 +2,8 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
+import BookSearch from './BookSearch';
+
 class BooksApp extends React.Component {
   state = {
     /**
@@ -12,7 +14,9 @@ class BooksApp extends React.Component {
      */
     showSearchPage: true
   }
-
+  showSrchPg = () => {
+    this.setState({ showSearchPage: true })
+  }
   render() {
     return (
       <div className="app">
@@ -193,9 +197,7 @@ class BooksApp extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
-            </div>
+            <BookSearch showSearch={this.showSrchPg} />
           </div>
         )}
       </div>
