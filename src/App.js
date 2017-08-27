@@ -9,26 +9,23 @@ import SearchBar from './SearchBar';
 
 class BooksApp extends React.Component {
   state = {
-    currentlyReading: [],
-    wantToRead: [],
-    read: []
+    allBooks: []
   }
   componentDidMount() {
-    BooksAPI.getAll().then(books => {
-      let currentlyReading = [],
-        wantToRead = [],
-        read = [];
-      for (const book of books) {
-        if (book.shelf === 'currentlyReading') {
-          currentlyReading.push(book);
-        } else if (book.shelf === 'wantToRead') {
-          wantToRead.push(book);
-        } else {
-          read.push(book);
-        }
+    BooksAPI.getAll().then(allBooks => 
+      this.setState({ allBooks })
+    );
+  }
+  bookClicked(moveToShelve, bookID) {
+    const cur = this.state.allBooks.slice();
+    for(const i of cur) {
+      if (i.id === bookID) {
+        i.shelf = moveToShelve;
+        break;
       }
-      this.setState({ currentlyReading, wantToRead, read });
-    })
+    }
+    this.setState({allBooks: cur});
+    
   }
   render() {
     return (
@@ -42,15 +39,24 @@ class BooksApp extends React.Component {
               <div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
-                  <Books booksInShelve={this.state.currentlyReading} />
+                  <Books 
+                    bookClicked={ this.bookClicked.bind(this) }
+                    filterBy='currentlyReading'
+                    booksInShelve={ this.state.allBooks } />
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
-                  <Books booksInShelve={this.state.wantToRead} />
+                  <Books
+                     bookClicked={ this.bookClicked.bind(this) }
+                     booksInShelve={ this.state.allBooks }
+                     filterBy='wantToRead'/>
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Read</h2>
-                  <Books booksInShelve={this.state.read} />
+                  <Books 
+                    bookClicked={ this.bookClicked.bind(this) }
+                    filterBy='read'
+                    booksInShelve={ this.state.allBooks } />
                 </div>
               </div>
             </div>
