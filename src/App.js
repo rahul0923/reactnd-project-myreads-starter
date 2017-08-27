@@ -17,16 +17,19 @@ class BooksApp extends React.Component {
     );
   }
   bookClicked(moveToShelve, bookID) {
+    let bookToUpdate;
     const cur = this.state.allBooks.slice();
     for(const i of cur) {
       if (i.id === bookID) {
+        bookToUpdate = i;
         i.shelf = moveToShelve;
         break;
       }
     }
     this.setState({allBooks: cur});
-    
+    BooksAPI.update(bookToUpdate, moveToShelve);    
   }
+
   render() {
     return (
       <div className="app">
