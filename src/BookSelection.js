@@ -3,14 +3,15 @@ import React, { Component } from 'react';
 class BookSelection extends Component {
 
     getText(val, text) {
-        return val === this.props.shelf ? `\u2714 ${text}` : `\u2002\u2002 ${text}`;
+        const currShelf = this.props.shelf || 'none';
+        return val === currShelf ? `\u2714 ${text}` : `\u2002\u2002 ${text}`;
         
     }
     render() {
         return (
             <div className="book-shelf-changer">
                 <select onChange={ this.props.shelfClicked }
-                        value={ this.props.shelf }>
+                        value={ this.props.shelf || 'none'}>
                     <option value="none" disabled>
                       { this.getText('move', 'Move to...') }
                     </option>

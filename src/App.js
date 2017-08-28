@@ -9,12 +9,20 @@ import SearchBar from './SearchBar';
 
 class BooksApp extends React.Component {
   state = {
-    allBooks: []
+    allBooks: [],
+    filteredBooks: [],
+    shelvedBooks: []
   }
   componentDidMount() {
-    BooksAPI.getAll().then(allBooks => 
+    BooksAPI.getAll().then(allBooks => {
+      const shelvedBooks = allBooks.reduce((ac, val) => {
+        const v = {'id': val.id, 'shelf': val.shelf};
+        return ac.concat(v)
+      }, []);
+      
+      this.setState({ shelvedBooks })
       this.setState({ allBooks })
-    );
+    });
   }
   bookClicked(moveToShelve, bookID) {
     let bookToUpdate;
@@ -29,7 +37,31 @@ class BooksApp extends React.Component {
     this.setState({allBooks: cur});
     BooksAPI.update(bookToUpdate, moveToShelve);    
   }
-
+  updateSearchView(moveToShelve, bookID) {
+    let bookToUpdate;
+    const cur = this.state.filteredBooks.slice();
+    for(const i of cur) {
+      if (i.id === bookID) {
+        bookToUpdate = i;
+        i.shelf = moveToShelve;
+        break;
+      }
+    }
+    this.setState({filteredBooks: cur.filter((book) => book.id !== bookToUpdate.id) });
+    this.setState( state => ({
+      allBooks: this.state.allBooks.concat([bookToUpdate])
+    }));
+    BooksAPI.update(bookToUpdate, moveToShelve);    
+  }
+  updateQuery(query) {
+    BooksAPI.search(query, 20)
+        .then((filteredBooks) => {
+          return  this.setState({filteredBooks})
+        })
+  }
+  clearSearch() {
+    this.setState({filteredBooks: []});
+  }
   render() {
     return (
       <div className="app">
@@ -66,7 +98,13 @@ class BooksApp extends React.Component {
             <BookSearch />
           </div>
         )} />
-        <Route path="/search" component={SearchBar} />
+        <Route exact path="/search" render={() => (
+          <SearchBar
+            knownBooks={ this.state.shelvedBooks}
+            resetSearch={ this.clearSearch.bind(this) }
+            bookClicked={ this.updateSearchView.bind(this) }
+            updateQuery={this.updateQuery.bind(this)} books={this.state.filteredBooks}/>
+        )} />
       </div>
     )
   }
