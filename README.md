@@ -1,3 +1,6 @@
+# MyReads App
+
+## About this project
 This project is a implementation of myreads app that has allows a user to see
 books that they are currently reading, have read, and want to read.
 They have a way to move a book to either of the shelves.
@@ -6,10 +9,31 @@ They can also search for a book by author name or title and a view will show a
 book list matching their search. User can see which shelve a book belongs in
 the search view or move a book to a particular shelf.
 
-## What You're Getting
+## Prerequisites
+
+You need to have node js (>1.6)
+
+## Quick Overview
+
+```sh
+cd reactnd-project-myreads-starter/
+npm install
+npm start
+```
+Then open [http://localhost:3000/](http://localhost:3000/) to see the app.<br> 
+
+## Installation
+
+Install it once globally:
+
+```sh
+npm install -g create-react-app
+```
+
+## Contents of this app
 ```
 +--public/    
- |-- index.html - DO NOT MODIFY
+ |-- index.html - No need to modify
  |-- favicon.ico - React Icon
 +-- src/
  +-- icons/ - Helpful images for my app.
