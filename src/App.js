@@ -2,7 +2,7 @@ import React from 'react'
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI';
 import Books from './Books';
 import SearchBar from './SearchBar';
 import './App.css'
@@ -32,8 +32,8 @@ class BooksApp extends React.Component {
         break;
       }
     }
-    this.setState({myBooks: books});
-    BooksAPI.update(bookToUpdate, moveToShelf);    
+    this.setState({ myBooks: books });
+    BooksAPI.update(bookToUpdate, moveToShelf);
   }
   
   updateShelveFromSearch(moveTo, bookObj) {
@@ -60,7 +60,7 @@ class BooksApp extends React.Component {
       bookObj.shelf = moveTo;
       updateBook.id = bookObj.id;
       this.setState((prevState) => (
-        {myBooks: [...prevState.myBooks, bookObj]}
+        { myBooks: [...prevState.myBooks, bookObj] }
       ));
     }
     BooksAPI.update(updateBook, moveTo);
@@ -74,7 +74,7 @@ class BooksApp extends React.Component {
 
   bookSearch(query) {
     if (!query || !String(query).trim()) {
-        this.setState({filteredBooks:[]});
+        this.setState({ filteredBooks:[] });
         return;
     }
     BooksAPI.search(query)
@@ -87,7 +87,7 @@ class BooksApp extends React.Component {
             }
           }
         }
-        this.setState({filteredBooks});
+        this.setState({ filteredBooks });
     })    
   }
 
@@ -113,7 +113,7 @@ class BooksApp extends React.Component {
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
                     <Books
-                      shelfUpdated={this.shelfChanged.bind(this)}
+                      shelfUpdated={ this.shelfChanged.bind(this) }
                       books={this.bookList('currentlyReading')} />
                   </div>
                 </div>
@@ -121,16 +121,16 @@ class BooksApp extends React.Component {
                   <h2 className="bookshelf-title">Want to Read</h2>
                   <div className="bookshelf-books">
                     <Books
-                      shelfUpdated={this.shelfChanged.bind(this)}
-                      books={this.bookList('wantToRead')} />
+                      shelfUpdated={ this.shelfChanged.bind(this) }
+                      books={ this.bookList('wantToRead') } />
                   </div>
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Read</h2>
                   <div className="bookshelf-books">
                     <Books 
-                      shelfUpdated={this.shelfChanged.bind(this)}
-                      books={this.bookList('read')} />
+                      shelfUpdated={ this.shelfChanged.bind(this) }
+                      books={ this.bookList('read') } />
                   </div>
                 </div>
               </div>
