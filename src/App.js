@@ -1,9 +1,8 @@
 import React from 'react'
 import { Route } from 'react-router';
-import { Link } from 'react-router-dom';
 
 import * as BooksAPI from './BooksAPI';
-import Books from './Books';
+import ListBooks from './ListBooks';
 import SearchBar from './SearchBar';
 import './App.css'
 
@@ -14,6 +13,9 @@ class BooksApp extends React.Component {
       myBooks: [],
       filteredBooks: []
     }
+    this.shelfChanged = this.shelfChanged.bind(this);
+    this.bookSearch = this.bookSearch.bind(this);
+    this.bookList = this.bookList.bind(this);
   }
 
   componentDidMount() {
@@ -97,48 +99,16 @@ class BooksApp extends React.Component {
         <Route exact path="/search" render={() => (
           <SearchBar
             filteredBooks={this.state.filteredBooks}
-            bookSearch={this.bookSearch.bind(this)}
+            bookSearch={ this.bookSearch }
             updateShelveFromSearch={(moveTo, bookObj) => {
               this.updateShelveFromSearch(moveTo, bookObj);
             }}/>
         )} />
         <Route exact path="/" render={() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <Books
-                      shelfUpdated={ this.shelfChanged.bind(this) }
-                      books={this.bookList('currentlyReading')} />
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <Books
-                      shelfUpdated={ this.shelfChanged.bind(this) }
-                      books={ this.bookList('wantToRead') } />
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <Books 
-                      shelfUpdated={ this.shelfChanged.bind(this) }
-                      books={ this.bookList('read') } />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="open-search">
-              <Link to="/search">Add a book</Link>
-            </div>
-          </div>
+          <ListBooks
+              shelfChanged={ this.shelfChanged }
+              bookList={ this.bookList }
+          />
         )} />
       </div>
     )

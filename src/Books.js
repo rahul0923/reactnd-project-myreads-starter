@@ -1,15 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import BookShelf from './BookShelf';
 
-class Books extends Component {
-    static propTypes = {
-      books: PropTypes.array.isRequired,
-      shelfUpdated: PropTypes.func.isRequired
-    }
-
-    getAuthor(book) {
+const Books = (props) => {
+    const getAuthor = (book) => {
       let author = ''
       if (book.hasOwnProperty('authors')) {
           author = book.authors[0];
@@ -17,9 +12,8 @@ class Books extends Component {
       return author;
     }
 
-    render() {
-        const {books, shelfUpdated } = this.props;
-        return (
+    const {books, shelfUpdated } = props;
+    return(
             <ol className="books-grid"> {
                 books.map(book => (
                   <li key={ book.id }>
@@ -36,14 +30,17 @@ class Books extends Component {
                             </div>
                         </div>
                         <div className="book-title">{ book.title }</div>
-                        <div className="book-authors">{ this.getAuthor(book) }</div>
+                        <div className="book-authors">{ getAuthor(book) }</div>
                     </div>                    
                   </li>
                 ))
             }
-            </ol>            
-        )
-    }
+            </ol>        
+    )
 }
 
+Books.prototypes = {
+    books: PropTypes.array.isRequired,
+    shelfUpdated: PropTypes.func.isRequired
+}
 export default Books;
