@@ -8,9 +8,7 @@ class Books extends Component {
       books: PropTypes.array.isRequired,
       shelfUpdated: PropTypes.func.isRequired
     }
-    getText(currShelf, val, text) {
-        return val === currShelf ? `\u2714 ${text}` : `\u2002\u2002 ${text}`;     
-    }
+
     getAuthor(book) {
       let author = ''
       if (book.hasOwnProperty('authors')) {
